@@ -38,5 +38,15 @@
         "user_query": "inbox call",
         "response": "Inbox Calls let you voice chat directly within Highrise, whether it's a private 1:1 call, a group call, or a crew voice chat.  They're available to users 18 and older and don't require a subscription.  You can even receive call notifications while you're not actively using the app! Let me know if you need more help!\n",
         "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "bye",
+        "response": "Goodbye! Let me know if you need more help!\n",
+        "solved": true
     }
 ]
