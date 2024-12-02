@@ -154,24 +154,25 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
     """
     Handle chat requests with contextual response generation
     """
-    try:
-        messages = request.messages
-        user_query = messages[-1].content
-        logging.info(f"User query: {user_query}")
+    # try:
+    #     messages = request.messages
+    #     user_query = messages[-1].content
+    #     logging.info(f"User query: {user_query}")
 
-        # streaming_response = StreamingResponse(
-        #     chat_service.generate_response(user_query, background_tasks)
-        # )
-        streaming_response = StreamingResponse(
-            chat_service.mock_generate_response(user_query)
-        )
-        streaming_response.headers["x-vercel-ai-data-stream"] = "v1"
+    #     # streaming_response = StreamingResponse(
+    #     #     chat_service.generate_response(user_query, background_tasks)
+    #     # )
+    #     streaming_response = StreamingResponse(
+    #         chat_service.mock_generate_response(user_query)
+    #     )
+    #     streaming_response.headers["x-vercel-ai-data-stream"] = "v1"
 
-        return streaming_response
+    #     return streaming_response
 
-    except Exception as e:
-        logging.error(f"Chat processing error: {e}")
-        return JSONResponse(status_code=500, content={"error": "Internal server error"})
+    # except Exception as e:
+    #     logging.error(f"Chat processing error: {e}")
+    #     return JSONResponse(status_code=500, content={"error": "Internal server error"})
+    return {"message": "Chat endpoint works!"}
 
 
 @app.get("/logs")
