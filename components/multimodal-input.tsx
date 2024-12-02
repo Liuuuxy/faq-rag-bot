@@ -19,19 +19,6 @@ import { ArrowUpIcon, StopIcon } from "./icons";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-const suggestedActions = [
-  {
-    title: "What is the weather",
-    label: "in San Francisco?",
-    action: "What is the weather in San Francisco?",
-  },
-  {
-    title: "How is python useful",
-    label: "for AI engineers?",
-    action: "How is python useful for AI engineers?",
-  },
-];
-
 export function MultimodalInput({
   chatId,
   input,
@@ -108,6 +95,7 @@ export function MultimodalInput({
   };
 
   const submitForm = useCallback(() => {
+    console.log("Submitting form with input:", input);
     handleSubmit(undefined, {});
     setLocalStorageInput("");
 

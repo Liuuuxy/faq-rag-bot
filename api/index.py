@@ -180,6 +180,7 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
     # except Exception as e:
     #     logging.error(f"Chat processing error: {e}")
     #     return JSONResponse(status_code=500, content={"error": "Internal server error"})
+    print("Chat endpoint works!")
     return {"message": "Chat endpoint works!"}
 
 
