@@ -149,6 +149,7 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
     try:
         messages = request.messages
         user_query = messages[-1].content
+        logging.info(f"User query: {user_query}")
 
         streaming_response = StreamingResponse(
             chat_service.generate_response(user_query, background_tasks)
