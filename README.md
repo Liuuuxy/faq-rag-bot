@@ -36,11 +36,7 @@ python data_extraction.py
 
 ### Video Recording
 
-<iframe width="560" height="315"
-src="https://www.youtube.com/embed/DzP6Z43PDPw" 
-frameborder="0" 
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
+[![Watch the video](https://img.youtube.com/vi/DzP6Z43PDPw/0.jpg)](https://youtu.be/DzP6Z43PDPw)
 
 _Demo showing local development setup with real-time streaming responses_
 
