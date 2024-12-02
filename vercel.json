@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**": {
-      "excludeFiles": "{.next,.git,node_modules,interactions.json}/**"
+      "excludeFiles": ".next/**,.git/**,node_modules/**,interactions.json,venv/**,faq_data.json,*.md"
     }
   }
 }
