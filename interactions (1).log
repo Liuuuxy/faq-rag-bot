@@ -1,0 +1,87 @@
+[
+    {
+        "user_query": "hi",
+        "response": "Hi there!  How can I help you today?\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  How can I help you today?\n",
+        "solved": true
+    },
+    {
+        "user_query": "?",
+        "response": "Could you please clarify what you mean? I can assist with topics related to Highrise LAND, Spectating, Bubbles, the Market, NFTs, and the SkyRise Mall.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
+    },
+    {
+        "user_query": "community guidelines",
+        "response": "Highrise's goal is to foster a positive community where players can make friends, design rooms, join crews, and decorate avatars.  To ensure a positive experience, players must be 13 or older (18 for voice/inbox media).  Creating wholesome content and positive interactions are key.  Content intended to anger or discourage others is prohibited.  Violations can result in warnings, mutes, temporary or permanent bans.  We have a zero-tolerance policy for child endangerment. Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "delete",
+        "response": "Could you please clarify what you mean? I can assist with topics related to deleting items, posts, comments, rooms, or your account.\n",
+        "solved": true
+    },
+    {
+        "user_query": "how to delete items",
+        "response": "To delete an item, go to the \u201cMy Items\u201d section of the app. Tap and hold the item you want to delete, then select \"Delete Item\".  A confirmation alert will appear, showing you how many Bubbles you'll receive. After confirming, the item is deleted, and you'll get a notification about the Bubbles added to your account. Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "apple",
+        "response": "I'm not sure about that, but you can find more information at the Highrise FAQ: https://support.highrise.game/en/.\n",
+        "solved": false
+    },
+    {
+        "user_query": "what's new",
+        "response": "Based on the provided text, several new features have been released.  These include Directory 4.0, Profile 4.0, an improved Inbox experience with pinning, Inbox Media Messages (for HR+ subscribers), and Owned Room Subscriptions.  Could you please clarify which of these you'd like to know more about?\n",
+        "solved": true
+    },
+    {
+        "user_query": "directory 4.0",
+        "response": "Directory 4.0 is a new way to navigate and discover worlds and rooms within the platform.  It offers a streamlined experience to find, follow, and interact with them. Worlds and Rooms can be accessed from the Directory and the Creations Tab in your profile.  They are categorized under different tabs for easy access.  The \"Beta\" label next to Worlds means the feature is in a testing phase.  In the Directory, you'll first see Worlds you're following, then a Spotlight section with handpicked Worlds. Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "ok thanks",
+        "response": "You're welcome! Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "bye",
+        "response": "Goodbye! Let me know if you need more help!\n",
+        "solved": true
+    }
+]
