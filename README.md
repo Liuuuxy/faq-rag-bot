@@ -34,6 +34,18 @@ python data_extraction.py
 
 ## Demo
 
+### Video Recording
+
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/DzP6Z43PDPw" 
+frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen></iframe>
+
+_Demo showing local development setup with real-time streaming responses_
+
+### Notebook
+
 `test.ipynb`
 
 A Jupyter notebook for testing and development:
