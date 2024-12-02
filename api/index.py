@@ -107,7 +107,7 @@ class ChatService:
         Generate a contextual response using Langchain's conversational chain
         """
         chunks = []
-        print(self.rag_chain.invoke({"input": message}))
+        # print(self.rag_chain.invoke({"input": message}))
         chain = self.rag_chain.pick("answer")
         for chunk in chain.stream({"input": message}):
             chunks.append(chunk)
