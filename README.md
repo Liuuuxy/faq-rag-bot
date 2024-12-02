@@ -51,6 +51,16 @@ The notebook serves as both documentation and a development tool for:
 - Fine-tuning prompt templates
 - Validating response quality
 
+## Known Issues
+
+### Vercel Deployment Size Limitation
+
+This project currently cannot be deployed to Vercel's free tier due to exceeding the 250MB unzipped function size limit:
+
+```
+Error: A Serverless Function has exceeded the unzipped maximum size of 250 MB
+```
+
 ## Architecture
 
 ### System Components
@@ -165,16 +175,6 @@ The system uses MongoDB Atlas Vector Search with the following configuration:
    - Optimized for Vercel deployment
    - Can be deployed to any static hosting service
    - Configure API endpoint URLs for production
-
-## Known Issues
-
-### Vercel Deployment Size Limitation
-
-This project currently cannot be deployed to Vercel's free tier due to exceeding the 250MB unzipped function size limit:
-
-```
-Error: A Serverless Function has exceeded the unzipped maximum size of 250 MB
-```
 
 #### Workarounds
 
