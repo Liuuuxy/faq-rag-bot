@@ -114,6 +114,14 @@ class ChatService:
             yield chunk
         background_tasks.add_task(self.log_interaction, message, chunks)
 
+    def mock_generate_response(self, message: str):
+        """
+        Generate a contextual response using Langchain's conversational chain
+        """
+        for chunk in range(100):
+            yield chunk
+        # background_tasks.add_task(self.log_interaction, message, chunks)
+
     def log_interaction(self, user_query, chunks: List[str]):
         response = "".join(chunks)
 
@@ -151,8 +159,11 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
         user_query = messages[-1].content
         logging.info(f"User query: {user_query}")
 
+        # streaming_response = StreamingResponse(
+        #     chat_service.generate_response(user_query, background_tasks)
+        # )
         streaming_response = StreamingResponse(
-            chat_service.generate_response(user_query, background_tasks)
+            chat_service.mock_generate_response(user_query)
         )
         streaming_response.headers["x-vercel-ai-data-stream"] = "v1"
 
