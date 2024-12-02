@@ -1,0 +1,42 @@
+[
+    {
+        "user_query": "hello",
+        "response": "Hello there! Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "hello",
+        "response": "Hello there! Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "delete",
+        "response": "Could you please clarify what you mean? I can assist with topics related to deleting items, posts, comments, rooms, or your account.\n",
+        "solved": true
+    },
+    {
+        "user_query": "delete account",
+        "response": "To permanently delete your Highrise account, you'll need the latest app version.  Open your profile, tap the gear icon, select 'Account Management', then 'Delete Your Account'.  Enter your Safety Lock (if enabled) and password to begin the process. You have 24 hours to cancel. After that, your account will be deactivated, and all data will be permanently deleted after 30 days.  This action cannot be undone!\n\nLet me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "introduce highrise",
+        "response": "I'm not sure about that, but you can find more information at the Highrise FAQ: https://support.highrise.game/en/.\n",
+        "solved": false
+    },
+    {
+        "user_query": "pinning",
+        "response": "Pinning in Highrise lets you highlight important content, like posts, comments, creations, or showcase items, to the top of your profile or chat for easy access.  You can pin up to 64 items in your profile and 50 messages in a chat.  A pinned item will have a pin icon (\ud83d\udccc) next to it.  To pin something, tap and hold it and select the \"Pin\" option. To unpin, follow the same steps and choose \"Unpin\". Let me know if you need more help!\n",
+        "solved": true
+    },
+    {
+        "user_query": "contact",
+        "response": "Could you please clarify what you mean? I can assist with topics related to \"Communicating with the Highrise Art Team\" and \"Inbox Calls\".\n",
+        "solved": true
+    },
+    {
+        "user_query": "inbox call",
+        "response": "Inbox Calls let you voice chat directly within Highrise, whether it's a private 1:1 call, a group call, or a crew voice chat.  They're available to users 18 and older and don't require a subscription.  You can even receive call notifications while you're not actively using the app! Let me know if you need more help!\n",
+        "solved": true
+    }
+]

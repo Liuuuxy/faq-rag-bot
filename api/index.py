@@ -1,27 +1,25 @@
 import os
 import json
 import logging
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
 # Langchain Imports
-from langchain import hub
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_chroma import Chroma
-from langgraph.graph import START, StateGraph
-from typing_extensions import List, TypedDict
+from langchain_mongodb.vectorstores import MongoDBAtlasVectorSearch
+from typing_extensions import List
 
 # Load environment variables
 load_dotenv(".env")
+
+INTERACTION_LOG_FILE = "interactions.json"
 
 
 class Message(BaseModel):
@@ -41,17 +39,39 @@ class InteractionLog(BaseModel):
 
 
 class ChatService:
-    def __init__(self, faq_file: str = "faq_data.json"):
+    def __init__(self):
         # Configure Google API
         api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
             logging.error("GOOGLE_API_KEY is not set.")
             raise ValueError("GOOGLE_API_KEY is required")
 
+        self.connection_string = os.getenv("MONGODB_ATLAS_CLUSTER_URI")
+
         # Langchain configurations
         self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
         self.embeddings = GoogleGenerativeAIEmbeddings(
             model="models/text-embedding-004"
+        )
+
+        DB_NAME = "langchain_faq_db"
+        COLLECTION_NAME = "langchain_faq_vectorstores"
+        ATLAS_VECTOR_SEARCH_INDEX_NAME = "langchain-faq-index-vectorstores"
+
+        self.vector_store = MongoDBAtlasVectorSearch.from_connection_string(
+            connection_string=self.connection_string,
+            namespace=DB_NAME + "." + COLLECTION_NAME,
+            embedding=self.embeddings,
+            index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
+        )
+        self.setup_retrieval_chain()
+
+    def setup_retrieval_chain(self):
+        """
+        Set up the retrieval chain for querying the vector store.
+        """
+        retriever = self.vector_store.as_retriever(
+            search_type="similarity", search_kwargs={"k": 6}
         )
 
         system_prompt = (
@@ -79,121 +99,43 @@ class ChatService:
                 ("human", "{input}"),
             ]
         )
-
-        # Chat history tracking
-        self.sessions: Dict[str, List[tuple]] = {}
-        vector_store = self.get_vector_store(faq_file)
-        retriever = vector_store.as_retriever(
-            search_type="similarity", search_kwargs={"k": 6}
-        )
-
         question_answer_chain = create_stuff_documents_chain(self.llm, self.prompt)
         self.rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    def parse_json_to_documents(self, json_data):
-        """
-        Convert JSON data into Langchain Documents
-        """
-        documents = []
-
-        if "collections" in json_data:
-            for collection in json_data["collections"]:
-                for article in collection.get("articles", []):
-                    # Combine all text fields
-                    content = (
-                        f"{article.get('question', '')}\n {article.get('answer', '')}\n"
-                    )
-
-                    # Create a Document
-                    doc = Document(
-                        page_content=content,
-                        metadata={"source": article.get("url", "unknown")},
-                    )
-                    documents.append(doc)
-
-        return documents
-
-    def get_vector_store(self, file_path: str):
-        """
-        Load JSON, create embeddings, and set up retrieval chain
-        """
-        try:
-            if not os.path.exists(file_path):
-                logging.error(f"FAQ file not found: {file_path}")
-                return None
-
-            # Load JSON file
-            try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    json_data = json.load(f)
-            except json.JSONDecodeError as json_err:
-                logging.error(f"JSON parsing error: {json_err}")
-                return None
-
-            # Convert JSON to documents
-            documents = self.parse_json_to_documents(json_data)
-
-            print(f"Parsed {len(documents)} documents from {file_path}")
-
-            if not documents:
-                print("No documents were parsed from the JSON file")
-                return None
-
-            # Split documents
-            text_splitter = RecursiveCharacterTextSplitter(
-                chunk_size=1000, chunk_overlap=150
-            )
-            docs = text_splitter.split_documents(documents)
-            print((f"Split {len(docs)} documents."))
-
-            vector_store = Chroma.from_documents(
-                documents=docs, embedding=self.embeddings
-            )
-            return vector_store
-
-        except Exception as e:
-            logging.error(f"Error loading database: {e}")
-            return None
-
-    def generate_response(self, message: str) -> Dict[str, Any]:
+    def generate_response(self, message: str, background_tasks: BackgroundTasks):
         """
         Generate a contextual response using Langchain's conversational chain
         """
+        chunks = []
+        print(self.rag_chain.invoke({"input": message}))
         chain = self.rag_chain.pick("answer")
         for chunk in chain.stream({"input": message}):
+            chunks.append(chunk)
             yield chunk
-        # print(result)
-        # response = {
-        #     "role": "assistant",
-        #     "content": result["answer"],
-        # }
+        background_tasks.add_task(self.log_interaction, message, chunks)
 
-        # return response
+    def log_interaction(self, user_query, chunks: List[str]):
+        response = "".join(chunks)
 
-    def log_interaction(
-        self,
-        user_query: str,
-        response: Any,
-        helpful: Optional[bool] = None,
-    ):
-        """
-        Log interaction details to a file
-        """
-        if not isinstance(response, str):
-            # Convert response to string if it is a dictionary or other type
-            response = json.dumps(response)
+        solved = "I'm not sure about that" not in response
 
-        log_entry = InteractionLog(
-            user_query=user_query,
-            response=response,
-            helpful=helpful,
-        )
+        interaction = {"user_query": user_query, "response": response, "solved": solved}
 
         try:
-            with open("interaction_logs.json", "a") as log_file:
-                log_file.write(log_entry.model_dump_json() + "\n")
-        except IOError as e:
-            logging.error(f"Failed to log interaction: {e}")
+            if os.path.exists(INTERACTION_LOG_FILE):
+                with open(INTERACTION_LOG_FILE, "r+") as f:
+                    data = json.load(f)
+                    data.append(interaction)
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+            else:
+                with open(INTERACTION_LOG_FILE, "w") as f:
+                    json.dump([interaction], f, indent=4)
+
+            print(f"Logged interaction: {interaction}")
+
+        except Exception as e:
+            logging.error(f"Error logging interaction: {e}")
 
 
 # FastAPI App Setup
@@ -202,31 +144,28 @@ chat_service = ChatService()
 
 
 @app.post("/api/chat")
-async def handle_chat(request: ChatRequest):
+async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
     """
     Handle chat requests with contextual response generation
     """
     try:
         messages = request.messages
-        # Generate contextual response
-        response = StreamingResponse(
-            chat_service.generate_response(messages[-1].content)
+        user_query = messages[-1].content
+
+        streaming_response = StreamingResponse(
+            chat_service.generate_response(user_query, background_tasks)
         )
-        response.headers["x-vercel-ai-data-stream"] = "v1"
-        print(response)
-        # Log interaction
-        # chat_service.log_interaction(user_query=messages[-1].content, response=response)
-        # print("json", JSONResponse(content=response))
-        # return JSONResponse(content=response)
-        return response
+        streaming_response.headers["x-vercel-ai-data-stream"] = "v1"
+
+        return streaming_response
 
     except Exception as e:
         logging.error(f"Chat processing error: {e}")
         return JSONResponse(status_code=500, content={"error": "Internal server error"})
 
 
-# Uncomment for local testing if needed
-# if __name__ == "__main__":
-#     import uvicorn
+# Uncomment for local testing
+if __name__ == "__main__":
+    import uvicorn
 
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
