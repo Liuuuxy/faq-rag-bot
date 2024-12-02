@@ -40,6 +40,8 @@ python data_extraction.py
 
 _Demo showing local development setup with real-time streaming responses_
 
+log file example: `interactions (1).log`
+
 ### Notebook
 
 `test.ipynb`
