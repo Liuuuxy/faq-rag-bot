@@ -1,7 +1,17 @@
 {
-  "functions": {
-    "api/**": {
-      "excludeFiles": ".next/**,.git/**,node_modules/**,interactions.json,venv/**,faq_data.json,*.md"
+  "version": 2,
+  "builds": [
+    {
+      "src": "app/api//*.py",
+      "use": "@vercel/python",
+      "config": {
+        "excludeFiles": ".next/**, *.cache/**, node_modules/**, public/**, app/**, .git/**, interactions.json, venv/**, faq_data.json, *.md"
+      }
+    },
+    {
+      "src": "next.config.js",
+      "use": "@vercel/next"
     }
-  }
+  ],
+  "routes": [{ "src": "/app/api/webhook", "dest": "/app/api/webhook.py" }]
 }

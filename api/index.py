@@ -165,7 +165,7 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
 
 
 # Uncomment for local testing
-if __name__ == "__main__":
-    import uvicorn
+# if __name__ == "__main__":
+#     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
