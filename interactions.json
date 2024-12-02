@@ -58,5 +58,10 @@
         "user_query": "voice chat",
         "response": "To start a voice chat, the room owner or moderator needs to go to the \"People in Room\" menu.  It costs 200 gold for an hour.  You can mute your microphone during the chat. The room owner or moderator can invite others to join.  The Visitors Bar shows who has voice chat privileges; a crossed-out mic means the player is muted.  Voice chat options include Deafen Voice, Report the Room's Voice, and End Voice (only for owners/moderators).  There's an age restriction of 18+. Let me know if you need more help!\n",
         "solved": true
+    },
+    {
+        "user_query": "hi",
+        "response": "Hi there!  Let me know if you need help with anything related to Inbox Media Messages, Inbox Calls, Highrise Community Guidelines, or using Voice Chat.\n",
+        "solved": true
     }
 ]

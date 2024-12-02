@@ -4,7 +4,7 @@ import logging
 from typing import List, Optional
 
 from fastapi import FastAPI, BackgroundTasks
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -19,7 +19,7 @@ from typing_extensions import List
 # Load environment variables
 load_dotenv(".env")
 
-INTERACTION_LOG_FILE = "interactions.json"
+LOG_FILE_PATH = "/tmp/interactions.log"
 
 
 class Message(BaseModel):
@@ -122,17 +122,15 @@ class ChatService:
         interaction = {"user_query": user_query, "response": response, "solved": solved}
 
         try:
-            if os.path.exists(INTERACTION_LOG_FILE):
-                with open(INTERACTION_LOG_FILE, "r+") as f:
+            if os.path.exists(LOG_FILE_PATH):
+                with open(LOG_FILE_PATH, "r+") as f:
                     data = json.load(f)
                     data.append(interaction)
                     f.seek(0)
                     json.dump(data, f, indent=4)
             else:
-                with open(INTERACTION_LOG_FILE, "w") as f:
+                with open(LOG_FILE_PATH, "w") as f:
                     json.dump([interaction], f, indent=4)
-
-            print(f"Logged interaction: {interaction}")
 
         except Exception as e:
             logging.error(f"Error logging interaction: {e}")
@@ -162,6 +160,16 @@ async def handle_chat(request: ChatRequest, background_tasks: BackgroundTasks):
     except Exception as e:
         logging.error(f"Chat processing error: {e}")
         return JSONResponse(status_code=500, content={"error": "Internal server error"})
+
+
+@app.get("/logs")
+def get_logs():
+    if os.path.exists(LOG_FILE_PATH):
+        return FileResponse(
+            LOG_FILE_PATH, media_type="text/plain", filename="interactions.log"
+        )
+    else:
+        return {"error": "Log file not found"}
 
 
 # Uncomment for local testing

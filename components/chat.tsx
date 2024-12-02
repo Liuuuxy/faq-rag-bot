@@ -36,9 +36,6 @@ export function Chat() {
         );
       }
     },
-    onResponse: (response) => {
-      console.log("Response received:", response);
-    },
     streamProtocol: "text",
   });
 
