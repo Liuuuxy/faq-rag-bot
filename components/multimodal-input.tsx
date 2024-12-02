@@ -1,7 +1,6 @@
 "use client";
 
 import type { ChatRequestOptions, CreateMessage, Message } from "ai";
-import { motion } from "framer-motion";
 import type React from "react";
 import {
   useRef,

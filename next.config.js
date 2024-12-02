@@ -10,6 +10,12 @@ const nextConfig = {
             : "/api/",
       },
       {
+        source: "/logs",
+        destination: process.env.NODE_ENV === "development"
+          ? "http://127.0.0.1:8000/logs"
+          : "/api/",
+      },
+      {
         source: "/docs",
         destination:
           process.env.NODE_ENV === "development"

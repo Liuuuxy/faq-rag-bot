@@ -6,6 +6,7 @@ import { Overview } from "@/components/overview";
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom";
 import { useChat } from "ai/react";
 import { toast } from "sonner";
+import { DownloadLogsButton } from "./download-logs-button";
 
 export function Chat() {
   const chatId = "001";
@@ -82,6 +83,9 @@ export function Chat() {
           append={append}
         />
       </form>
+      <div className="flex justify-center px-4 pb-4">
+        <DownloadLogsButton />
+      </div>
     </div>
   );
 }
